@@ -1,42 +1,49 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecipeStore } from "./recipeStore";
 
 const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
-
+  const addRecipe = useRecipeStore((s) => s.addRecipe);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!title.trim() || !description.trim()) return;
 
-    addRecipe({
-      id: Date.now(),
-      title,
-      description,
-    });
+    const newRecipe = {
+      id: Date.now().toString(), // string id — consistent across components
+      title: title.trim(),
+      description: description.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    addRecipe(newRecipe);
+
+    // optionally navigate to the new recipe's detail page
+    navigate(`/recipes/${newRecipe.id}`);
 
     setTitle("");
     setDescription("");
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: "1rem" }}>
+    <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
       <input
-        type="text"
+        placeholder="Title"
         value={title}
-        placeholder="Recipe title"
         onChange={(e) => setTitle(e.target.value)}
+        className="mb-2"
       />
-
+      <br />
       <textarea
+        placeholder="Description"
         value={description}
-        placeholder="Recipe description"
         onChange={(e) => setDescription(e.target.value)}
+        className="mb-2"
       />
-
+      <br />
       <button type="submit">Add Recipe</button>
     </form>
   );
