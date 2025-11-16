@@ -3,29 +3,67 @@ import { create } from "zustand";
 export const useRecipeStore = create((set, get) => ({
   recipes: [],
 
-  // add a recipe
-  addRecipe: (recipe) =>
-    set((state) => ({ recipes: [...state.recipes, recipe] })),
+  // SEARCH / FILTER STATE
+  searchTerm: "",
+  filteredRecipes: [],
 
-  // delete by id (id is assumed unique)
-  deleteRecipe: (id) =>
-    set((state) => ({
-      recipes: state.recipes.filter((r) => String(r.id) !== String(id)),
-    })),
+  setSearchTerm: (term) => {
+    set({ searchTerm: term });
+    // auto-filter when search changes
+    get().filterRecipes();
+  },
 
-  // update recipe: expects object with id and fields to replace
-  updateRecipe: (updatedRecipe) =>
+  filterRecipes: () =>
     set((state) => ({
-      recipes: state.recipes.map((r) =>
-        String(r.id) === String(updatedRecipe.id)
-          ? { ...r, ...updatedRecipe }
-          : r
+      filteredRecipes: state.recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
       ),
     })),
 
-  // set all recipes (optional for initializing)
-  setRecipes: (recipes) => set({ recipes }),
+  // CRUD
+  addRecipe: (recipe) =>
+    set((state) => {
+      const updated = [...state.recipes, recipe];
+      return {
+        recipes: updated,
+        filteredRecipes: updated.filter((r) =>
+          r.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        ),
+      };
+    }),
 
-  // helper: find recipe by id (not required but handy)
+  deleteRecipe: (id) =>
+    set((state) => {
+      const updated = state.recipes.filter((r) => String(r.id) !== String(id));
+      return {
+        recipes: updated,
+        filteredRecipes: updated.filter((r) =>
+          r.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        ),
+      };
+    }),
+
+  updateRecipe: (updatedRecipe) =>
+    set((state) => {
+      const updated = state.recipes.map((r) =>
+        String(r.id) === String(updatedRecipe.id)
+          ? { ...r, ...updatedRecipe }
+          : r
+      );
+
+      return {
+        recipes: updated,
+        filteredRecipes: updated.filter((r) =>
+          r.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        ),
+      };
+    }),
+
+  setRecipes: (recipes) =>
+    set({
+      recipes,
+      filteredRecipes: recipes,
+    }),
+
   getRecipeById: (id) => get().recipes.find((r) => String(r.id) === String(id)),
 }));
