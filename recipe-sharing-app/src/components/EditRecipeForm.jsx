@@ -24,8 +24,8 @@ const EditRecipeForm = () => {
     return <p>Recipe not found.</p>;
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (!title.trim() || !description.trim()) return;
 
     updateRecipe({
