@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useRecipeStore } from "./recipeStore";
-import DeleteRecipeButton from "./DeleteRecipeButton";
+import DeleteRecipeButton from "./DeleteRecipeButton.jsx";
 
 const RecipeDetails = () => {
   const { id } = useParams();
@@ -20,7 +20,7 @@ const RecipeDetails = () => {
 
   return (
     <div>
-      <h1>{recipe.title}</h1>
+      <h1>{recipe.id}</h1>
       <p>{recipe.description}</p>
       <p style={{ color: "#666", fontSize: 12 }}>
         Created:{" "}
