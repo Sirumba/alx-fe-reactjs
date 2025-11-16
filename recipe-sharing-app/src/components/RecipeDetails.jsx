@@ -4,10 +4,11 @@ import DeleteRecipeButton from "./DeleteRecipeButton.jsx";
 
 const RecipeDetails = () => {
   const { id } = useParams();
-  const recipe = useRecipeStore((s) =>
-    s.recipes.find((r) => String(r.id) === String(id))
-  );
+  const recipe = useRecipeStore((s) => s.getRecipeById(id));
   const navigate = useNavigate();
+  const favorites = useRecipeStore((s) => s.favorites);
+  const addFavorite = useRecipeStore((s) => s.addFavorite);
+  const removeFavorite = useRecipeStore((s) => s.removeFavorite);
 
   if (!recipe) {
     return (
@@ -18,9 +19,11 @@ const RecipeDetails = () => {
     );
   }
 
+  const isFavorite = favorites.includes(recipe.id);
+
   return (
     <div>
-      <h1>{recipe.id}</h1>
+      <h1>{recipe.title}</h1>
       <p>{recipe.description}</p>
       <p style={{ color: "#666", fontSize: 12 }}>
         Created:{" "}
@@ -31,6 +34,21 @@ const RecipeDetails = () => {
           Edit
         </Link>
         <DeleteRecipeButton recipeId={id} onDeleted={() => navigate("/")} />
+        {isFavorite ? (
+          <button
+            onClick={() => removeFavorite(recipe.id)}
+            style={{ marginLeft: 8 }}
+          >
+            Remove from Favorites
+          </button>
+        ) : (
+          <button
+            onClick={() => addFavorite(recipe.id)}
+            style={{ marginLeft: 8 }}
+          >
+            Add to Favorites
+          </button>
+        )}
       </div>
     </div>
   );
