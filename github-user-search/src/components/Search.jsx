@@ -17,7 +17,7 @@ function Search() {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError("Looks like we cant find the user"); // exact string expected by test
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ function Search() {
       {userData && (
         <div>
           <img src={userData.avatar_url} alt="avatar" width={100} />
-          <p>{userData.name}</p>
+          <p>{userData.login}</p> {/* use login instead of name */}
           <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
