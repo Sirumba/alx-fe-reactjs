@@ -4,9 +4,8 @@ function HomePage() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    // Load the JSON file
     fetch("/src/data.json")
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => setRecipes(data))
       .catch((err) => console.error("Error loading data:", err));
   }, []);
@@ -17,7 +16,7 @@ function HomePage() {
         Recipe Sharing Platform
       </h1>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
           <div
             key={recipe.id}
