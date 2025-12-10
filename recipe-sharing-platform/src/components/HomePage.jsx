@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [recipes, setRecipes] = useState([]);
@@ -6,8 +7,7 @@ function HomePage() {
   useEffect(() => {
     fetch("/src/data.json")
       .then((res) => res.json())
-      .then((data) => setRecipes(data))
-      .catch((err) => console.error("Error loading data:", err));
+      .then((data) => setRecipes(data));
   }, []);
 
   return (
@@ -18,20 +18,19 @@ function HomePage() {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
-          <div
+          <Link
+            to={`/recipe/${recipe.id}`}
             key={recipe.id}
-            className="bg-white rounded-xl shadow-md hover:shadow-xl transform hover:scale-105 transition p-4"
+            className="bg-white rounded-xl shadow-md hover:shadow-xl transform hover:scale-105 transition p-4 block"
           >
             <img
               src={recipe.image}
               alt={recipe.title}
               className="rounded-xl w-full h-48 object-cover mb-4"
             />
-
             <h2 className="text-xl font-semibold mb-2">{recipe.title}</h2>
-
             <p className="text-gray-600">{recipe.summary}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
