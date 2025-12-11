@@ -1,36 +1,39 @@
-import { useQuery } from "@tanstack/react-query";
-
-const fetchPosts = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  return res.json();
-};
+import React from "react";
+import { useQuery } from "react-query";
 
 function PostsComponent() {
-  const { data, error, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ["posts"],
-    queryFn: fetchPosts,
-    staleTime: 5000,
-    cacheTime: 1000 * 60 * 5,
-  });
+  const fetchPosts = async () => {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+    return res.json();
+  };
+
+  const { data, isLoading, error, refetch, isFetching } = useQuery(
+    "posts",
+    fetchPosts,
+    {
+      staleTime: 5000, // Demonstrates caching
+      cacheTime: 1000 * 60, // 1 minute cache
+    }
+  );
 
   if (isLoading) return <p>Loading posts...</p>;
-  if (error) return <p>Error loading posts.</p>;
+  if (error) return <p>Error fetching posts.</p>;
 
   return (
     <div>
       <button
         onClick={() => refetch()}
-        className="bg-blue-600 text-white px-4 py-2 rounded mb-4"
+        style={{ marginBottom: "10px", padding: "10px" }}
       >
         Refetch Posts
       </button>
 
       {isFetching && <p>Refreshing...</p>}
 
-      <ul className="space-y-4">
-        {data.map((post) => (
-          <li key={post.id} className="border p-4 rounded shadow">
-            <h3 className="font-bold">{post.title}</h3>
+      <ul>
+        {data.slice(0, 5).map((post) => (
+          <li key={post.id} style={{ marginBottom: "10px" }}>
+            <strong>{post.title}</strong>
             <p>{post.body}</p>
           </li>
         ))}
