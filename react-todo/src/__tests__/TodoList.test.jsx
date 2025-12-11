@@ -10,9 +10,8 @@ describe("TodoList Component", () => {
 
   test("adds a new todo", () => {
     render(<TodoList />);
-    fireEvent.change(screen.getByPlaceholderText("New todo"), {
-      target: { value: "Test new todo" },
-    });
+    const input = screen.getByPlaceholderText("New todo");
+    fireEvent.change(input, { target: { value: "Test new todo" } });
     fireEvent.click(screen.getByText("Add"));
     expect(screen.getByText("Test new todo")).toBeInTheDocument();
   });
@@ -28,7 +27,7 @@ describe("TodoList Component", () => {
   test("deletes a todo", () => {
     render(<TodoList />);
     const todoItem = screen.getByText("Build Todo App");
-    const deleteButton = todoItem.nextSibling;
+    const deleteButton = screen.getByText("Delete", { selector: "button" });
     fireEvent.click(deleteButton);
     expect(todoItem).not.toBeInTheDocument();
   });

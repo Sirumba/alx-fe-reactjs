@@ -36,7 +36,6 @@ export default function TodoList() {
               cursor: "pointer",
             }}
             onClick={() => toggleTodo(todo.id)}
-            data-testid={`todo-${todo.id}`}
           >
             {todo.text}{" "}
             <button
@@ -55,7 +54,7 @@ export default function TodoList() {
 }
 
 function AddTodoForm({ addTodo }) {
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -72,7 +71,6 @@ function AddTodoForm({ addTodo }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="New todo"
-        data-testid="todo-input"
       />
       <button type="submit">Add</button>
     </form>
