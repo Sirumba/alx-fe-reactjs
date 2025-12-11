@@ -16,7 +16,7 @@ function FormikForm() {
         initialValues={{ username: "", email: "", password: "" }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log("Submitted:", values);
+          console.log(values);
           alert("User registered successfully (Formik)");
         }}
       >
