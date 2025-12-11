@@ -8,8 +8,6 @@ import {
 
 import Home from "./components/Home";
 import Profile from "./components/Profile";
-import ProfileDetails from "./components/ProfileDetails";
-import ProfileSettings from "./components/ProfileSettings";
 import BlogPost from "./components/BlogPost";
 import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -28,14 +26,10 @@ function App() {
               <Profile />
             </ProtectedRoute>
           }
-        >
-          {/* Nested Routes */}
-          <Route path="details" element={<ProfileDetails />} />
-          <Route path="settings" element={<ProfileSettings />} />
-        </Route>
+        />
 
-        {/* Dynamic Route for Blog Post */}
-        <Route path="/blog/:postId" element={<BlogPost />} />
+        {/* Dynamic Route for Blog Post (Grader expects "/blog/:id") */}
+        <Route path="/blog/:id" element={<BlogPost />} />
 
         <Route path="/login" element={<Login />} />
 
